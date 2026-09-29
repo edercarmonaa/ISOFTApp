@@ -15,6 +15,7 @@ import { OrientationLocker, PORTRAIT, LANDSCAPE } from "react-native-orientation
 import AsyncStorage from '@react-native-community/async-storage';
 
 import Loader from './Components/Loader';
+import {getApiUrl} from './config';
 
 const RegisterScreen = (props) => {
   const [user_name, setUserName] = useState('');
@@ -81,7 +82,7 @@ const RegisterScreen = (props) => {
     }
     formBody = formBody.join('&');
 
-    fetch('http://23.96.1.110/api/register', {
+    fetch(getApiUrl('/api/register'), {
       method: 'POST',
       body: formBody,
       headers: {
@@ -92,7 +93,6 @@ const RegisterScreen = (props) => {
       .then((response) => response.json())
       .then((responseJson) => {
         setLoading(false);
-        console.log(responseJson);
         if( responseJson.hasOwnProperty('error') ) {
           if( responseJson.error.hasOwnProperty('user_email') ) {
             setErrortext('Ya existe un usuario Registrado con ese email');

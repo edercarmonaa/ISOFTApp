@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from "react-native-orientation-locker";
  	
 import Loader from '../Components/Loader';
+import {getApiUrl} from '../config';
 
 
 const TicketScreen =  (props) => {
@@ -42,7 +43,6 @@ const TicketScreen =  (props) => {
 
   const onSuccess =  (e) => {
     setResult(e);
-    console.log(result.data)
     if (!result.data){
       scanner.reactivate ();
     }else{
@@ -90,7 +90,7 @@ const TicketScreen =  (props) => {
     }
     formBody = formBody.join('&');
 
-    fetch('http://23.96.1.110/api/ticket', {
+    fetch(getApiUrl('/api/ticket'), {
       method: 'POST',
       body: formBody,
       headers: {
@@ -101,7 +101,6 @@ const TicketScreen =  (props) => {
       .then((response) => response.json())
       .then((responseJson) => {
         setLoading(false);
-        console.log(responseJson);
         if( responseJson.hasOwnProperty('error') ) {
           if (responseJson.error.hasOwnProperty('ticket_id')){
             setErrortext('El ticket ya se encuentra registrado');  

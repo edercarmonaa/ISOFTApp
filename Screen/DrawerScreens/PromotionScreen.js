@@ -10,6 +10,7 @@ import CustomSlider from './Carousel/CustomSlider';
 import styles from './Carousel/styles';
 
 import Loader from '../Components/Loader';
+import {getApiUrl} from '../config';
 
 
 const PromotionScreen =  (props) => {
@@ -35,12 +36,11 @@ const PromotionScreen =  (props) => {
     setLoading(true);
    const userToken = await AsyncStorage.getItem('token');
    const userEmail = await AsyncStorage.getItem('user_id');
-   var url = new URL("http://23.96.1.110/api/get_promotion");
+   var url = new URL(getApiUrl('/api/get_promotion'));
    var params = {
      token: userToken,
    }
    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-   console.log(url);
    fetch(url, {
      method: 'GET',
      headers: {
@@ -51,7 +51,7 @@ const PromotionScreen =  (props) => {
      .then((response) => response.json())
      .then((responseJson) => {
          if (responseJson.success == false) {
-           console.log(responseJson);
+           setLoading(false);
          } else {
           setData(responseJson[0].prize);
           setPromotion(responseJson[0].promotion_name);

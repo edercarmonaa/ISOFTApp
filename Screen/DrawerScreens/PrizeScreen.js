@@ -10,6 +10,7 @@ import CustomSlider from './Carousel/CustomSlider';
 import styles from './Carousel/styles';
 
 import Loader from '../Components/Loader';
+import {getApiUrl} from '../config';
 
 
 const PrizeScreen =  (props) => {
@@ -37,13 +38,12 @@ const PrizeScreen =  (props) => {
     setLoading(true);
    const userToken = await AsyncStorage.getItem('token');
    const userEmail = await AsyncStorage.getItem('user_id');
-   var url = new URL("http://23.96.1.110/api/get_promotion");
+   var url = new URL(getApiUrl('/api/get_promotion'));
    var params = {
      token: userToken,
      user_email: userEmail,
    }
    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-   console.log(url);
    fetch(url, {
      method: 'GET',
      headers: {
@@ -54,7 +54,7 @@ const PrizeScreen =  (props) => {
      .then((response) => response.json())
      .then((responseJson) => {
          if (responseJson.success == false) {
-           console.log(responseJson);
+           setLoading(false);
          } else {
           setPromotion(responseJson[0].promotion_name);
           setStartDate(responseJson[0].promotion_startdate);
@@ -75,13 +75,12 @@ const PrizeScreen =  (props) => {
     setLoading(true);
    const userToken = await AsyncStorage.getItem('token');
    const userEmail = await AsyncStorage.getItem('user_id');
-   var url = new URL("http://23.96.1.110/api/win");
+   var url = new URL(getApiUrl('/api/win'));
    var params = {
      token: userToken,
      user_email: userEmail,
    }
    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-   console.log(url);
    fetch(url, {
      method: 'GET',
      headers: {
@@ -92,10 +91,9 @@ const PrizeScreen =  (props) => {
      .then((response) => response.json())
      .then((responseJson) => {
          if (responseJson.success == false) {
-           console.log(responseJson);
+           setLoading(false);
          } else {
           setData(responseJson);
-          console.log(datas);
           setLoading(false);
          }
        }

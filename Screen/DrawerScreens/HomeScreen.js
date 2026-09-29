@@ -6,6 +6,7 @@ import { OrientationLocker, PORTRAIT, LANDSCAPE } from "react-native-orientation
 import AsyncStorage from '@react-native-community/async-storage';
 
 import Loader from '../Components/Loader';
+import {getApiUrl} from '../config';
 const LeftContent = props => <Avatar.Icon {...props} icon="wallet-giftcard" />
 
 
@@ -36,12 +37,11 @@ const HomeScreen = (props) => {
     setLoading(true);
    const userToken = await AsyncStorage.getItem('token');
    const userEmail = await AsyncStorage.getItem('user_id');
-   var url = new URL("http://23.96.1.110/api/get_promotion");
+   var url = new URL(getApiUrl('/api/get_promotion'));
    var params = {
      token: userToken,
    }
    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-   console.log(url);
    fetch(url, {
      method: 'GET',
      headers: {
@@ -52,7 +52,7 @@ const HomeScreen = (props) => {
      .then((response) => response.json())
      .then((responseJson) => {
          if (responseJson.success == false) {
-           console.log(responseJson);
+           setLoading(false);
          } else {
           setPromotion(responseJson[0].promotion_name);
           setDescription(responseJson[0].promotion_description);
@@ -70,13 +70,12 @@ const HomeScreen = (props) => {
   setLoading(true);
   const userToken = await AsyncStorage.getItem('token');
   const userEmail = await AsyncStorage.getItem('user_id');
-   var url = new URL("http://23.96.1.110/api/point");
+   var url = new URL(getApiUrl('/api/point'));
    var params = {
      token: userToken,
      user_email: userEmail,
    }
    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-   console.log(url);
    fetch(url, {
      method: 'GET',
      headers: {
@@ -87,7 +86,7 @@ const HomeScreen = (props) => {
      .then((response) => response.json())
      .then((responseJson) => {
          if (responseJson.success == false) {
-           console.log(responseJson);
+           setLoading(false);
          } else {
           setPoints(responseJson.points);
           setPoints2(responseJson.points2);

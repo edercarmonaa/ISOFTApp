@@ -11,6 +11,7 @@ import {
 
 
 import AsyncStorage from '@react-native-community/async-storage';
+import {getApiUrl} from '../config';
 
 
 const CustomSidebarMenu = (props) => {
@@ -62,11 +63,9 @@ const CustomSidebarMenu = (props) => {
 
 const handleLogout = async (props) => {
   const userToken = await AsyncStorage.getItem('token');
-  console.log(AsyncStorage.getItem('token'));
-  var url = new URL("http://23.96.1.110/api/logout");
-    params = {token: userToken,}
+  var url = new URL(getApiUrl('/api/logout'));
+  var params = {token: userToken};
   Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-  console.log(url);
   fetch(url, {
     method: 'GET',
     headers: {
@@ -76,7 +75,6 @@ const handleLogout = async (props) => {
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson);
         if (responseJson.success == true) {
           AsyncStorage.clear();
           props.navigation.replace('Auth');

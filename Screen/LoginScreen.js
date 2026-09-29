@@ -15,8 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { OrientationLocker, PORTRAIT, LANDSCAPE } from "react-native-orientation-locker";
 
 import Loader from './Components/Loader';
-
-const API_URL = 'http://23.96.1.110/api/login';
+import {getApiUrl} from './config';
 
 const LoginScreen = ({navigation}) => {
 
@@ -53,7 +52,7 @@ const LoginScreen = ({navigation}) => {
       formBody.push(encodedKey + '=' + encodedValue);
     }
     formBody = formBody.join('&');
-    fetch('http://23.96.1.110/api/login', {
+    fetch(getApiUrl('/api/login'), {
       method: 'POST',
       body: formBody,
       headers: {

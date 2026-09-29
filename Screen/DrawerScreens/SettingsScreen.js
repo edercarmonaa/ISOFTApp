@@ -12,6 +12,7 @@ import { OrientationLocker, PORTRAIT, LANDSCAPE } from "react-native-orientation
 
  	
 import Loader from '../Components/Loader';
+import {getApiUrl} from '../config';
 
 const SettingsScreen =  (props) => {
   const [user_name, setUserName] = useState('');
@@ -55,13 +56,12 @@ const SettingsScreen =  (props) => {
     setLoading(true);
   const userToken = await AsyncStorage.getItem('token');
   const userEmail = await AsyncStorage.getItem('user_id');
-  var url = new URL("http://23.96.1.110/api/show_user");
+  var url = new URL(getApiUrl('/api/show_user'));
   var params = {
     token: userToken,
     user_email: userEmail,
   }
   Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-  console.log(url);
   fetch(url, {
     method: 'GET',
     headers: {
@@ -71,9 +71,8 @@ const SettingsScreen =  (props) => {
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson);
         if (responseJson.success == false) {
-          console.log(responseJson);
+          setLoading(false);
         } else {
           setUserName(responseJson.user_name);
           setUserEmail(responseJson.user_email);
@@ -131,7 +130,7 @@ const SettingsScreen =  (props) => {
     }
     formBody = formBody.join('&');
 
-    fetch('http://23.96.1.110/api/update_user', {
+    fetch(getApiUrl('/api/update_user'), {
       method: 'POST',
       body: formBody,
       headers: {
@@ -142,8 +141,6 @@ const SettingsScreen =  (props) => {
       .then((response) => response.json())
       .then((responseJson) => {
         setLoading(false);
-        console.log(responseJson);
-        console.log(tablet);
         if( responseJson.hasOwnProperty('error') ) {
             setErrortext('Su contraseña debe tener almenos 6 caracteres');
         }else{

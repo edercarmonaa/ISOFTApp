@@ -12,6 +12,7 @@ import { OrientationLocker, PORTRAIT, LANDSCAPE } from "react-native-orientation
 
  	
 import Loader from '../Components/Loader';
+import {getApiUrl} from '../config';
 
 const SettingsScreen =  (props) => {
   const [taxe_email, setTaxeEmail] = useState('');
@@ -52,7 +53,7 @@ const SettingsScreen =  (props) => {
     setLoading(true);
   const userToken = await AsyncStorage.getItem('token');
   const userEmail = await AsyncStorage.getItem('user_id');
-  var url = new URL("http://23.96.1.110/api/get_taxes");
+  var url = new URL(getApiUrl('/api/get_taxes'));
   var params = {
     token: userToken,
     user_email: userEmail,
@@ -67,9 +68,7 @@ const SettingsScreen =  (props) => {
   })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson);
         if (responseJson.success == false) {
-          console.log(responseJson);
           setIsTaxe(false);
           setLoading(false);
         } else {
@@ -105,7 +104,6 @@ const SettingsScreen =  (props) => {
     }
     //Show Loader
     setLoading(true);
-    console.log(taxe_rfc);
     var dataToSend = {
       token: userToken,
       user_email: userEmail,
@@ -122,9 +120,9 @@ const SettingsScreen =  (props) => {
     }
     formBody = formBody.join('&');
     if (istaxe){
-      var url = "http://23.96.1.110/api/update_taxes";
+      var url = getApiUrl('/api/update_taxes');
     }else{
-      var url = "http://23.96.1.110/api/taxes";
+      var url = getApiUrl('/api/taxes');
     }
     fetch(url, {
       method: 'POST',
@@ -137,7 +135,6 @@ const SettingsScreen =  (props) => {
       .then((response) => response.json())
       .then((responseJson) => {
         setLoading(false);
-        console.log(responseJson);
         if( responseJson.hasOwnProperty('error') ) {
           if( responseJson.error.hasOwnProperty('taxe_rfc') ) {
             setErrortext('RFC Incorrecto');
