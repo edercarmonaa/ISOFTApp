@@ -48,21 +48,14 @@ No se detectaron roles administrativos dentro de esta app. El codigo revisado co
 
 ## Capturas
 
-El repositorio no incluye capturas de pantalla del producto. Actualmente solo existen imagenes de marca y recursos graficos en `Image/`.
-
-Cuando existan capturas reales, se recomienda agregarlas en una carpeta como `docs/images/` y documentarlas asi:
-
-```markdown
-## Capturas
-
 ### Inicio
 
 ![Inicio](docs/images/inicio.png)
 
 ### Registro de ticket
 
-![Registro de ticket](docs/images/registro-ticket.png)
-```
+![Registro de ticket](docs/images/ticket.png)
+
 
 ## Tecnologias utilizadas
 
